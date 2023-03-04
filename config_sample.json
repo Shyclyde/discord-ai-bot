@@ -1,0 +1,45 @@
+{
+    "bot": {
+        "name": "BottyMcBotFace",
+        "botAdminRole": "Bot Admins"
+    },
+    "discord": {
+        "otherBotID": "sample",
+        "textChannelID": "sample"
+    },
+    "openAI": {
+        "text": {
+            "enabled": true,
+            "apiURL": "https://api.openai.com/v1/completions",
+            "model": "davinci",
+            "maxTokens": 64,
+            "temperature": 0.5,
+            "topP": 1,
+            "completions": 1,
+            "frequencyPenalty": 0,
+            "presencePenalty": 0,
+            "stopValue": "\n",
+            "contextLength": 10
+        },
+        "image": {
+            "apiURL": "https://api.openai.com/v1/images/generations",
+            "completions": 1,
+            "imageSize": "512x512"
+        }
+    },
+    "gameServer": {
+        "serverName": "Server Name",
+        "games": [
+            {
+                "name": "GameName",
+                "processName": "process-name",
+                "memoryEstimate": 1024
+            },
+            {
+                "name": "GameName2",
+                "processName": "process-name2",
+                "memoryEstimate": 1024
+            }
+        ]
+    }
+}
