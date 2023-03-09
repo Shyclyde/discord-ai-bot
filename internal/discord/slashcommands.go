@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/shyclyde/discord-ai-bot/config"
 	"github.com/shyclyde/discord-ai-bot/pkg/utils"
 )
 
@@ -22,7 +23,7 @@ func GameServerHandler(s *discordgo.Session, i *discordgo.InteractionCreate) {
 			// Ignore type for now, they will be discussed in "responses"
 			Type: discordgo.InteractionResponseChannelMessageWithSource,
 			Data: &discordgo.InteractionResponseData{
-				Content: "I bow to no peasant. Admins only.",
+				Content: fmt.Sprintf("I bow to no peasant. %s only.", config.Config.Bot.BotAdminRole),
 			},
 		})
 		return
