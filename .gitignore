@@ -37,3 +37,6 @@ main
 
 # temporary image files
 temp_image*
+
+# vscode settings
+.vscode/
