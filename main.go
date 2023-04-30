@@ -11,6 +11,7 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/shyclyde/discord-ai-bot/config"
 	"github.com/shyclyde/discord-ai-bot/internal/discord"
+	"github.com/shyclyde/discord-ai-bot/internal/stats"
 )
 
 var (
@@ -52,6 +53,7 @@ func main() {
 	defer bot.Close()
 
 	discord.LoadServerConfig(bot)
+	go stats.StartUpdateTick(bot)
 
 	// Bot is ready, keep online till the bot is killed
 	log.Printf("%s is ready to serve. (ctrl+c to exit)\n", config.Config.Bot.Name)
@@ -62,6 +64,7 @@ func main() {
 	log.Printf("Shutting down...\n")
 
 	discord.RemoveDiscordAppCommands(bot)
+	stats.RemoveStats(bot)
 
 	log.Printf("%s is flying away.\n", config.Config.Bot.Name)
 }
