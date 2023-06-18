@@ -10,14 +10,18 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
+var (
+	spoops = 0
+)
+
 const (
-	UpdateTickSeconds = 10
+	UpdateTickSeconds = 360
 )
 
 func StartUpdateTick(s *discordgo.Session) {
 	for {
 		for _, guild := range s.State.Guilds {
-			UpdateGuild(s, guild)
+			go UpdateGuild(s, guild)
 		}
 		time.Sleep(UpdateTickSeconds * time.Second)
 	}
@@ -114,17 +118,17 @@ func CreateStatsOnGuild(s *discordgo.Session, g *discordgo.Guild) {
 		log.Panic(err)
 	}
 
-	// ch_data = discordgo.GuildChannelCreateData{
-	// 	Name:     fmt.Sprintf("test: %d", testseconds),
-	// 	Type:     discordgo.ChannelTypeGuildVoice,
-	// 	Topic:    "eyyyyy",
-	// 	ParentID: cat.ID,
-	// }
+	ch_data = discordgo.GuildChannelCreateData{
+		Name:     fmt.Sprintf("spoops: %d", spoops),
+		Type:     discordgo.ChannelTypeGuildVoice,
+		Topic:    "eyyyyy",
+		ParentID: cat.ID,
+	}
 
-	// _, err = s.GuildChannelCreateComplex(g.ID, ch_data)
-	// if err != nil {
-	// 	log.Panic(err)
-	// }
+	_, err = s.GuildChannelCreateComplex(g.ID, ch_data)
+	if err != nil {
+		log.Panic(err)
+	}
 }
 
 func UpdateGuild(s *discordgo.Session, g *discordgo.Guild) {
@@ -133,26 +137,25 @@ func UpdateGuild(s *discordgo.Session, g *discordgo.Guild) {
 	if err != nil {
 		log.Fatalln(err)
 	}
-
+	log.Println("Going through channels")
 	for _, ch := range g.Channels {
 		if ch.ParentID == parent_id {
 			if strings.HasPrefix(ch.Name, fmt.Sprintf("%s Members:", g.Name)) {
 				s.ChannelEdit(ch.ID, &discordgo.ChannelEdit{
 					Name: fmt.Sprintf("%s Members: %d", g.Name, g.MemberCount),
 				})
+			} else if strings.HasPrefix(ch.Name, "spoops:") {
+				log.Printf("Updating spoops: %d", spoops)
+				st, err := s.ChannelEdit(ch.ID, &discordgo.ChannelEdit{
+					Name: fmt.Sprintf("spoops: %d", spoops),
+				})
+				if err != nil {
+					log.Println(err)
+				} else {
+					log.Println(st.Name)
+				}
 			}
-			// } else if strings.HasPrefix(ch.Name, "timetospoop:") {
-			// 	log.Printf("Updating test channel with %d", testseconds)
-			// 	st, err := s.ChannelEdit(ch.ID, &discordgo.ChannelEdit{
-			// 		Name: fmt.Sprintf("test: %d", testseconds),
-			// 	})
-			// 	if err != nil {
-			// 		log.Println(err)
-			// 	} else {
-			// 		log.Println(st.Name)
-			// 	}
-			// 	fmt.Println("did i get here")
-			// }
 		}
 	}
+	spoops += 1
 }

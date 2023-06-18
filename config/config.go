@@ -32,6 +32,7 @@ type AppConfig struct {
 			ContextLength    int     `json:"contextLength"`
 		} `json:"text"`
 		Image struct {
+			Enabled     bool   `json:"enabled"`
 			API_URL     string `json:"apiURL"`
 			Completions int    `json:"completions"`
 			ImageSize   string `json:"imageSize"`

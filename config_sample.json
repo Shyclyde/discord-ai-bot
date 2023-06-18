@@ -22,6 +22,7 @@
             "contextLength": 10
         },
         "image": {
+            "enabled": true,
             "apiURL": "https://api.openai.com/v1/images/generations",
             "completions": 1,
             "imageSize": "512x512"

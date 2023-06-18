@@ -14,7 +14,6 @@ import (
 )
 
 func MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
-
 	if m.Author.ID == s.State.User.ID {
 		return
 	} else if m.ChannelID != config.Config.Discord.TextChannelID {
@@ -22,7 +21,7 @@ func MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 	} else if strings.Contains(strings.ToLower(m.Content), strings.ToLower(config.Config.Bot.Name)) {
 		msg := strings.ToLower(m.Content)
 
-		otherbot, err := s.State.Member(m.GuildID, config.Config.Discord.OtherBotID)
+		otherbot, err := s.GuildMember(m.GuildID, config.Config.Discord.OtherBotID)
 		if err != nil {
 			log.Printf("Can't get other bot, %v\n", err)
 			return
@@ -38,6 +37,7 @@ func MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 		} else if strings.Contains(msg, "how's the server memory?") {
 			msgCheckServerMemory(s, m)
 		} else if strings.Contains(msg, "serve me ") {
+			log.Println("Handling image request")
 			msgOpenAIImage(s, m)
 		} else if config.Config.OpenAI.Text.Enabled {
 			msgOpenAIText(s, m)
