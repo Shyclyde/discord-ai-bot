@@ -34,9 +34,11 @@ type OpenAITextRequest struct {
 }
 
 type OpenAIImageRequest struct {
+	Model       string `json:"model"`
 	Prompt      string `json:"prompt"`
 	Completions int    `json:"n"`
 	Size        string `json:"size"`
+	Quality     string `json:"quality"`
 }
 
 type OpenAIImageResponse struct {
@@ -77,14 +79,22 @@ func callOpenAIAPI(body []byte, API_URL string) ([]byte, error) {
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", openai_api_key))
 	resp, err := client.Do(req)
 	if err != nil {
+		log.Printf("Error calling OpenAI API: %s", err)
 		return nil, err
 	}
 	defer resp.Body.Close()
 
+	if resp.StatusCode == 400 {
+		log.Printf("Image query rejected for content violation for: %s", string(body))
+		return nil, fmt.Errorf("very bad wroing words were used")
+	}
+
 	respBody, err := io.ReadAll(resp.Body)
 	if err != nil {
+		log.Printf("Error reading OpenAI API response: %s", err)
 		return nil, err
 	}
+
 	return respBody, nil
 }
 
@@ -162,9 +172,11 @@ func GenerateText(prompt string, requestor string) (string, error, bool) {
 
 func GenerateImage(prompt string) (string, error) {
 	payload := OpenAIImageRequest{
+		Model:       config.Config.OpenAI.Image.Model,
 		Prompt:      prompt,
 		Completions: config.Config.OpenAI.Image.Completions,
-		Size:        config.Config.OpenAI.Image.ImageSize,
+		Size:        config.Config.OpenAI.Image.Size,
+		Quality:     config.Config.OpenAI.Image.Quality,
 	}
 
 	body, err := json.Marshal(payload)

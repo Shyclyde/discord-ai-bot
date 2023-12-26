@@ -3,7 +3,6 @@ package utils
 import (
 	"log"
 	"runtime"
-	"syscall"
 )
 
 func LogMemUsage() {
@@ -23,19 +22,21 @@ func bToKb(b uint64) uint64 {
 }
 
 func GetSysTotalMemory() uint64 {
-	in := &syscall.Sysinfo_t{}
-	err := syscall.Sysinfo(in)
-	if err != nil {
-		return 0
-	}
-	return uint64(in.Totalram) * uint64(in.Unit)
+	// in := &syscall.Sysinfo_t{}
+	// err := syscall.Sysinfo(in)
+	// if err != nil {
+	// 	return 0
+	// }
+	// return uint64(in.Totalram) * uint64(in.Unit)
+	return 0
 }
 
 func GetSysFreeMemory() uint64 {
-	in := &syscall.Sysinfo_t{}
-	err := syscall.Sysinfo(in)
-	if err != nil {
-		return 0
-	}
-	return uint64(in.Freeram) * uint64(in.Unit)
+	// in := &syscall.Sysinfo_t{}
+	// err := syscall.Sysinfo(in)
+	// if err != nil {
+	// 	return 0
+	// }
+	// return uint64(in.Freeram) * uint64(in.Unit)
+	return 0
 }

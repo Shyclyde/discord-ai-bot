@@ -14,13 +14,14 @@ func LoadServerConfig(s *discordgo.Session) {
 
 func initIntents(s *discordgo.Session) {
 	log.Printf("Loading Discord intents...\n")
-	s.Identify.Intents = discordgo.IntentGuildMessages
-	s.Identify.Intents |= discordgo.IntentGuilds
-	s.Identify.Intents |= discordgo.IntentGuildMembers
-	s.Identify.Intents |= discordgo.IntentGuildMessageReactions
-	s.Identify.Intents |= discordgo.IntentGuildEmojis
-	s.Identify.Intents |= discordgo.IntentGuildIntegrations
-	s.Identify.Intents |= discordgo.IntentMessageContent
+
+	s.Identify.Intents = discordgo.IntentGuildMessages |
+		discordgo.IntentGuilds |
+		discordgo.IntentGuildMembers |
+		discordgo.IntentGuildMessageReactions |
+		discordgo.IntentGuildEmojis |
+		discordgo.IntentGuildIntegrations |
+		discordgo.IntentMessageContent
 }
 
 func initHandlers(s *discordgo.Session) {

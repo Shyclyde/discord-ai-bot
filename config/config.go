@@ -33,8 +33,10 @@ type AppConfig struct {
 		} `json:"text"`
 		Image struct {
 			API_URL     string `json:"apiURL"`
+			Model       string `json:"model"`
+			Size        string `json:"size"`
+			Quality     string `json:"quality"`
 			Completions int    `json:"completions"`
-			ImageSize   string `json:"imageSize"`
 		} `json:"image"`
 	} `json:"openAI"`
 
