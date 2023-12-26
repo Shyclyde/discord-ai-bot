@@ -23,8 +23,10 @@
         },
         "image": {
             "apiURL": "https://api.openai.com/v1/images/generations",
-            "completions": 1,
-            "imageSize": "512x512"
+            "model": "dall-e-3",
+            "size": "1024x1024",
+            "quality": "hd",
+            "completions": 1
         }
     },
     "gameServer": {

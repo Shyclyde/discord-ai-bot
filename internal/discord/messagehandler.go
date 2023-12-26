@@ -22,7 +22,7 @@ func MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 	} else if strings.Contains(strings.ToLower(m.Content), strings.ToLower(config.Config.Bot.Name)) {
 		msg := strings.ToLower(m.Content)
 
-		otherbot, err := s.State.Member(m.GuildID, config.Config.Discord.OtherBotID)
+		otherbot, err := s.GuildMember(m.GuildID, config.Config.Discord.OtherBotID)
 		if err != nil {
 			log.Printf("Can't get other bot, %v\n", err)
 			return
@@ -82,7 +82,7 @@ func msgOpenAIImage(s *discordgo.Session, m *discordgo.MessageCreate) {
 	imageURL, err := openai.GenerateImage(req)
 	if err != nil {
 		log.Printf("Error trying to generate OpenAI image: %s", err)
-		s.ChannelMessageSend(m.ChannelID, "I'm sorry, that's unfortunately not something I can serve.")
+		s.ChannelMessageSend(m.ChannelID, fmt.Sprintf("I'm sorry, that's unfortunately not something I can serve, because %s", err))
 		return
 	}
 
